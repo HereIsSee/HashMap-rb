@@ -80,7 +80,6 @@ class LinkedList
 
       @pointer = @pointer.next_node
     end
-
   end
 
   def insert_at(key, value, index)
@@ -102,14 +101,13 @@ class LinkedList
 
   def remove_at(index)
     return puts 'index out of bounds' if index >= @size
-    
-    value = nil
+
     if index == 0
       value = @head.value
       @head = @head.next_node
       return value
     end
-    
+
     return pop if index == (@size - 1)
 
     @pointer = @head
@@ -120,7 +118,7 @@ class LinkedList
     end
     value = @pointer.value
     temp.next_node = @pointer.next_node
-    return value
+    value
   end
 
   def to_s
@@ -156,5 +154,4 @@ class LinkedList
     end
     array
   end
-  
 end
