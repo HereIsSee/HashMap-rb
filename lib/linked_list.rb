@@ -46,7 +46,9 @@ class LinkedList
       @pointer = @pointer.next_node
     end
     @size -= 1
+    value = @pointer.next_node.value
     @pointer.next_node = nil
+    value
   end
 
   def contains?(key)
@@ -99,11 +101,16 @@ class LinkedList
   end
 
   def remove_at(index)
-    if index == 0
-      @head = @head.next_node
-      return
-    end
     return puts 'index out of bounds' if index >= @size
+    
+    value = nil
+    if index == 0
+      value = @head.value
+      @head = @head.next_node
+      return value
+    end
+    
+    return pop if index == (@size - 1)
 
     @pointer = @head
     temp = nil
@@ -111,8 +118,9 @@ class LinkedList
       temp = @pointer if (index - 1) == indicator
       @pointer = @pointer.next_node
     end
+    value = @pointer.value
     temp.next_node = @pointer.next_node
-    nil
+    return value
   end
 
   def to_s
@@ -124,4 +132,5 @@ class LinkedList
     end
     string + 'nil'
   end
+  
 end

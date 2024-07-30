@@ -35,6 +35,26 @@ class HashMap
     nil
   end
 
+  def has?(key)
+    hash_code = hash(key) % @hash_map_size
+
+    return true if @buckets[hash_code].contains?(key)
+
+    false
+  end
+
+  def remove(key)
+    hash_code = hash(key) % @hash_map_size
+
+    index = @buckets[hash_code].find(key)
+
+    if !index.nil?
+      return @buckets[hash_code].remove_at(index) 
+    end
+
+    nil
+  end
+
 end
 
 map = HashMap.new
@@ -45,4 +65,4 @@ map = HashMap.new
     map.set(key, value)
   end
 
-p map.get("good")
+p map.remove("bad")
