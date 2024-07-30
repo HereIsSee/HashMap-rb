@@ -19,7 +19,21 @@ class HashMap
   end
  
   def update_hashmap
-    
+    puts "#{@element_count} >= #{@load_factor * @hash_map_size}"
+    if (@element_count) >= @hash_map_size*@load_factor
+      @hash_map_size *= 2
+      temp = Array.new(@hash_map_size) {LinkedList.new}
+      
+      entries().each do |key, value|
+        index = hash(key) % @hash_map_size
+        temp[index].prepend(key, value)
+      end
+      @buckets = temp
+    end
+  end
+
+  def to_console
+    @buckets.each {|bucket| puts bucket.to_s}
   end
 
   def set(key, value)
@@ -30,6 +44,7 @@ class HashMap
     end
     @element_count += 1
     @buckets[index].prepend(key, value)
+    update_hashmap
   end
 
   def get(key)
@@ -56,7 +71,9 @@ class HashMap
 
     if !index.nil?
       @element_count -= 1
-      return @buckets[hash_code].remove_at(index) 
+      value = @buckets[hash_code].remove_at(index)
+      update_hashmap()
+      return value
     end
 
     nil
@@ -97,19 +114,23 @@ class HashMap
     array
   end
 
+  def copy_entries_to_new_array(array)
+    
+  end
+
 end
 
 map = HashMap.new
 
 {"something" => 34, "good" => 1,
-  "for" => 123, "me" => 12222}.each do |key, value|
-    # puts "#{key} : #{value}"
+  "for" => 123, "me" => 12222,
+  "bad" => 22, "keys" => 908,
+  "deer" => 712, "olea" => 494,
+  "let" => 542, "no" => 9,
+  "gluck" => 42, "plop" => 39,
+  "nick" => 22, "nooo" =>23
+}.each do |key, value|
     map.set(key, value)
   end
-map.set("keys", 908)
 
-p map.keys
-p map.values
 p map.entries
-map.clear
-p map.length
