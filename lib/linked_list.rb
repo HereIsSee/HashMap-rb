@@ -11,19 +11,19 @@ class LinkedList
     @size = 0
   end
 
-  def prepend(value, key)
+  def prepend(key, value)
     @size += 1
-    @head = Node.new(value, key, @head)
+    @head = Node.new(key, value, @head)
   end
 
-  def append(value, key)
+  def append(key, value)
     @size += 1
     if @head.nil?
-      @head = Node.new(value, key, nil)
+      @head = Node.new(key, value, nil)
       @tail = @head
       return
     end
-    @tail.next_node = Node.new(value, key, nil)
+    @tail.next_node = Node.new(key, value, nil)
     @tail = @tail.next_node
     @head.value
   end
@@ -71,9 +71,19 @@ class LinkedList
     nil
   end
 
-  def insert_at(value, key, index)
+  def replace_value_with_same_key(key, value)
+    @pointer = @head
+    until @pointer.nil?
+      return @pointer.value = value if @pointer.key == key
+
+      @pointer = @pointer.next_node
+    end
+
+  end
+
+  def insert_at(key, value, index)
     if index == 0
-      @head = Node.new(value, key, @head)
+      @head = Node.new(key, value, @head)
       return
     end
     return puts 'index out of bounds' if index >= @size
@@ -84,7 +94,7 @@ class LinkedList
       temp = @pointer if (index - 1) == indicator
       @pointer = @pointer.next_node
     end
-    temp.next_node = Node.new(value, key, @pointer)
+    temp.next_node = Node.new(key, value, @pointer)
     nil
   end
 

@@ -2,9 +2,9 @@
 class Node
   attr_reader :value, :key, :next_node
 
-  def initialize(value = nil, key = nil, next_node = nil)
-    @value = value
+  def initialize(key = nil, value = nil, next_node = nil)
     @key = key
+    @value = value
     @next_node = next_node
   end
 end
