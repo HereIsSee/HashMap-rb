@@ -132,5 +132,29 @@ class LinkedList
     end
     string + 'nil'
   end
+
+  def values_to_array
+    collect_from_nodes { |node| node.value }
+  end
+
+  def keys_to_array
+    collect_from_nodes { |node| node.key }
+  end
+
+  def entries_to_array
+    collect_from_nodes { |node| [node.key, node.value] }
+  end
+
+  private
+
+  def collect_from_nodes
+    array = []
+    current_node = @head
+    until current_node.nil?
+      array << yield(current_node)
+      current_node = current_node.next_node
+    end
+    array
+  end
   
 end

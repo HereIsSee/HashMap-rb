@@ -3,7 +3,7 @@ require_relative 'linked_list'
 class HashMap
 
   def initialize
-    @buckets = Array.new(16,LinkedList.new)
+    @buckets = Array.new(16) {LinkedList.new}
     @load_factor = 0.75
     @hash_map_size = 16
     @element_count = 0
@@ -18,11 +18,17 @@ class HashMap
     hash_code
   end
  
+  def update_hashmap
+    
+  end
+
   def set(key, value)
     index = hash(key) % @hash_map_size
-
-    return @buckets[index].replace_value_with_same_key(key, value) if @buckets[index].contains?(key)
-
+    
+    if @buckets[index].contains?(key)
+      return @buckets[index].replace_value_with_same_key(key, value) 
+    end
+    @element_count += 1
     @buckets[index].prepend(key, value)
   end
 
@@ -49,10 +55,46 @@ class HashMap
     index = @buckets[hash_code].find(key)
 
     if !index.nil?
+      @element_count -= 1
       return @buckets[hash_code].remove_at(index) 
     end
 
     nil
+  end
+
+  def length
+    @element_count
+  end
+
+  def clear
+    @buckets = Array.new(16,LinkedList.new)
+    @load_factor = 0.75
+    @hash_map_size = 16
+    @element_count = 0
+  end
+  
+  def keys
+    collect_from_buckets(&:keys_to_array)
+  end
+
+  def values
+    collect_from_buckets(&:values_to_array)
+  end
+
+  def entries
+    collect_from_buckets(&:entries_to_array)
+  end
+
+  private
+
+  def collect_from_buckets
+    array = Array.new
+
+    @buckets.each do |bucket|
+      array.concat(yield bucket)
+    end
+
+    array
   end
 
 end
@@ -64,5 +106,10 @@ map = HashMap.new
     # puts "#{key} : #{value}"
     map.set(key, value)
   end
+map.set("keys", 908)
 
-p map.remove("bad")
+p map.keys
+p map.values
+p map.entries
+map.clear
+p map.length
